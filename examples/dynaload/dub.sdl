@@ -1,0 +1,19 @@
+name "dynaload"
+description "add classes and methods from a dynamic library"
+authors "Jean-Louis Leroy"
+copyright "Copyright © 2017, Jean-Louis Leroy"
+license "Boost Software License 1.0"
+targetType "executable"
+dependency "openmethods" path="../../"
+dependency "openmethods:dynalib" path="../"
+dflags "-defaultlib=phobos2"
+
+buildType "x" {
+  buildOptions "debugMode" "debugInfo" "unittests"
+  debugVersions "explain"
+}
+
+buildType "xtc" {
+  buildOptions "debugMode" "debugInfo" "unittests"
+  debugVersions "explain" "traceCalls"
+}
