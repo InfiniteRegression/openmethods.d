@@ -1,7 +1,15 @@
 import std.stdio;
+import dog;
 
-extern (C) void* makePitbull()
+class Pitbull : Dog
 {
-  writeln("return a new pitbull");
-  return null;
+  override void bark()
+  {
+    writeln("waf! WAF! GRRR...");
+  }
+}
+
+extern (C) Dog makePitbull()
+{
+  return new Pitbull;
 }

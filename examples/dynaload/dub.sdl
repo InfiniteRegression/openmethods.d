@@ -5,7 +5,6 @@ copyright "Copyright © 2017, Jean-Louis Leroy"
 license "Boost Software License 1.0"
 targetType "executable"
 dependency "openmethods" path="../../"
-dependency "openmethods:dynalib" path="../"
 dflags "-defaultlib=phobos2"
 
 buildType "x" {

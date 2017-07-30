@@ -1,20 +1,18 @@
-import std.stdio;
+import std.stdio, std.exception;
 import core.runtime;
+
+import dog;
 
 extern(C) void* dlsym(void*, const char*);
 
 void main()
 {
-  writeln("hello from app.d");
-  auto dll = Runtime.loadLibrary("/home/jll/d/dev/openmethods.d/examples/dynalib/libopenmethods_dynalib.so");
-  writefln("rc = %s", dll);
+  auto so = Runtime.loadLibrary("/home/jll/d/dev/openmethods.d/examples/dynalib/libopenmethods_dynalib.so");
+  enforce(so);
 
-  void* makePitbull = dlsym(dll, "makePitbull\0".ptr);
+  auto makePitbull = cast(Dog function()) dlsym(so, "makePitbull\0".ptr);
+  enforce(makePitbull);
 
-  if (makePitbull is null) {
-    writeln("symbol not found");
-    return;
-  }
-
-  (cast(int function()) makePitbull)();
+  auto rex = makePitbull();
+  rex.bark();
 }
