@@ -590,7 +590,7 @@ struct Method(string id, string Mptr, R, T...)
 
 struct MethodTag { }
 
-struct Runtime
+private struct Runtime
 {
   union Word
   {

@@ -1,3 +1,14 @@
+import openmethods;
+mixin(registerMethods);
+
+string kick(virtual!Dog);
+
+@method
+string _kick(Dog x)
+{
+  return "bark";
+}
+
 class Dog
 {
   void bark()
