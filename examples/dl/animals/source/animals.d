@@ -13,20 +13,14 @@ interface Prey : Animal
 {
 }
 
-class Zebra : Prey
+class Wolf : Predator
 {
-
 }
 
-class Tiger : Predator
-{
-
-}
-
-string meet(virtual!Animal, virtual!Animal);
+string species(virtual!Animal);
 
 @method
-string _meet(Animal, Animal)
+string _species(Wolf)
 {
-  return "ignore";
+  return "wolf";
 }
