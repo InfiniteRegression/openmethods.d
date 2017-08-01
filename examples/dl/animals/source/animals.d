@@ -1,8 +1,19 @@
+import openmethods;
+mixin(registerMethods);
+
 interface Animal
 {
 }
 
-interface Predator
+interface Predator : Animal
+{
+}
+
+interface Prey : Animal
+{
+}
+
+class Zebra : Prey
 {
 
 }
@@ -10,4 +21,12 @@ interface Predator
 class Tiger : Predator
 {
 
+}
+
+string meet(virtual!Animal, virtual!Animal);
+
+@method
+string _meet(Animal, Animal)
+{
+  return "ignore";
 }
