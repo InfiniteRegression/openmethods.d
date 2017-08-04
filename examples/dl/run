@@ -1,28 +1,19 @@
-ROOT=`pwd`
-DLDIR=$ROOT/examples/dl
-rm -fR $DLDIR/bin
-mkdir $DLDIR/bin
-cd $DLDIR/bin
-
-P2=-defaultlib=libphobos2.so
-SOFLAGS="-H -I$ROOT/source -debug -g -w -fPIC -vcolumns -shared $P2 -L-L. -L-rpath=$DLDIR/bin"
-
+HERE=`dirname $0`
+cd $HERE
+echo $HERE
 DC=dmd
-#
+SOFLAGS="-g -H -L-fPIC -shared"
 
-XTC='-version=explain -version=traceCalls'
+$DC $SOFLAGS -c ../../source/openmethods.d
+$DC $SOFLAGS openmethods.o -oflibopenmethods.so
 
-$DC $SOFLAGS $XTC $ROOT/source/openmethods.d -oflibopenmethods.so
-$DC $SOFLAGS $XTC $DLDIR/animals/source/animals.d -oflibanimals.so -L-lopenmethods
-$DC $SOFLAGS $XTC $DLDIR/animals/source/animals.d -oflibmorelibanimals.so -L-lanimals -L-lopenmethods
-$DC $XTC $P2 $DLDIR/dlapp/app.d -ofanimals -L-L. -L-lanimals -L-lopenmethods -L-rpath=$DLDIR/bin
+$DC $SOFLAGS -c animals.d
+$DC $SOFLAGS animals.o -oflibanimals.so
+
+$DC $SOFLAGS -c moreanimals.d
+$DC $SOFLAGS moreanimals.o -oflibmoreanimals.so
+
+$DC -c app.d
+$DC app.o -of=animals -L-L. -L-lanimals -L-lopenmethods -L-lphobos2 -L-rpath=`pwd`
 
 ./animals
-
-# lflags "-rpath=/home/jll/dev/d/openmethods.d"
-# lflags "-rpath=/home/jll/dev/d/openmethods.d/examples/dl/animals"
-# lflags "-L/home/jll/dev/d/openmethods.d/examples/dl/animals"
-# lflags "-lopenmethods"
-
-
-ls -l
