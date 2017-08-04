@@ -9,26 +9,6 @@ mixin(registerMethods);
 import openmethods;
 mixin(registerMethods);
 
-string meet(virtual!Animal, virtual!Animal);
-
-@method
-string _meet(Animal, Animal)
-{
-  return "ignore";
-}
-
-@method
-string _meet(Predator, Prey)
-{
-  return "chase";
-}
-
-@method
-string _meet(Prey, Predator)
-{
-  return "run";
-}
-
 extern(C) void* dlsym(void*, const char*);
 
 void main()
@@ -36,21 +16,33 @@ void main()
   updateMethods();
 
   Animal ralf = new Wolf;
-  writeln("ralf is a ", species(ralf));
+  assert(species(ralf) == "wolf");
 
-  auto so = Runtime.loadLibrary("libmoreanimals.so");
-  enforce(so);
+  Animal clarabelle = new Cow;
+  assert(species(clarabelle) == "cow");
+
+  assert(meet(ralf, ralf) == "ignore");
+  assert(meet(ralf, clarabelle) == "ignore");
+
+  auto moreanimals = Runtime.loadLibrary("libmoreanimals.so");
+  enforce(moreanimals);
 
   updateMethods();
 
-  auto make = cast(Animal function(string)) dlsym(so, "make\0".ptr);
+  auto make = cast(Animal function(string)) dlsym(moreanimals, "make\0".ptr);
   enforce("make");
 
-  Animal clarabelle = make("Cow");
-  enforce(clarabelle);
-  writeln("clarabelle is a ", species(clarabelle));
+  Animal tanngrisnir = make("moreanimals.Goat");
+  enforce(tanngrisnir);
 
-  assert(meet(ralf, ralf) == "ignore");
   assert(meet(ralf, clarabelle) == "chase");
   assert(meet(clarabelle, ralf) == "run");
+
+  assert(meet(ralf, tanngrisnir) == "chase");
+  assert(meet(tanngrisnir, ralf) == "run");
+
+  Runtime.unloadLibrary(moreanimals);
+
+  updateMethods();
+  assert(meet(ralf, clarabelle) == "ignore");
 }

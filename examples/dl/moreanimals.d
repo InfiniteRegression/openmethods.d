@@ -1,20 +1,27 @@
+module moreanimals;
+
 import animals;
 
 import openmethods;
 mixin(registerMethods);
 
-class Cow : Prey
+class Goat : Prey
 {
-
 }
 
 @method
-string _species(Cow)
+string _meet(Predator, Prey)
 {
-  return "cow";
+  return "chase";
+}
+
+@method
+string _meet(Prey, Predator)
+{
+  return "run";
 }
 
 extern (C) Animal make(string species)
 {
-  return new Cow;
+  return cast(Animal) Object.factory(species);
 }

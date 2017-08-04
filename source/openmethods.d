@@ -561,6 +561,7 @@ struct Method(string id, string Mptr, R, T...)
   static class Specialization(alias fun)
   {
     alias Parameters!fun SpecParams;
+
     shared static this() {
       auto wrapper = function ReturnType(Params args) {
         static if (is(ReturnType == void)) {
@@ -573,6 +574,10 @@ struct Method(string id, string Mptr, R, T...)
       static __gshared Runtime.SpecInfo si;
       si.pf = cast(void*) wrapper;
 
+      debug(explain) {
+        writefln("Registering override %s%s (%s)", id, SpecParams.stringof, &si);
+      }
+
       foreach (i, QP; QualParams) {
         static if (IsVirtual!QP) {
           si.vp ~= SpecParams[i].classinfo;
@@ -583,6 +588,16 @@ struct Method(string id, string Mptr, R, T...)
 
       Runtime.needUpdate = true;
     }
+  }
+
+  shared static ~this()
+  {
+    debug(explain) {
+      writefln("Removing override %s%s", id, SpecParams.stringof);
+    }
+    info.specInfos.remove(&si);
+    info.specInfos.length -= 1;
+    Runtime.needUpdate = true;
   }
 
   static Spec nextPtr(T...) = null;
