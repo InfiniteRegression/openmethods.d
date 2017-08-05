@@ -18,6 +18,10 @@ do
 
     for target in $(ls $dir)
     do
+        if [ "$target" = 'dl' ];
+        then
+           continue;
+        fi
         if [ -d $dir/$target ];
         then
             echo $target
