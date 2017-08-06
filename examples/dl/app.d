@@ -1,5 +1,5 @@
 import std.stdio, std.exception;
-import core.runtime;
+static import core.runtime;
 
 import animals;
 
@@ -24,7 +24,7 @@ void main()
   assert(meet(ralf, ralf) == "ignore");
   assert(meet(ralf, clarabelle) == "ignore");
 
-  auto moreanimals = Runtime.loadLibrary("libmoreanimals.so");
+  auto moreanimals = core.runtime.Runtime.loadLibrary("libmoreanimals.so");
   enforce(moreanimals);
 
   updateMethods();
@@ -41,8 +41,8 @@ void main()
   assert(meet(ralf, tanngrisnir) == "chase");
   assert(meet(tanngrisnir, ralf) == "run");
 
-  Runtime.unloadLibrary(moreanimals);
+  core.runtime.Runtime.unloadLibrary(moreanimals);
 
-  updateMethods();
-  assert(meet(ralf, clarabelle) == "ignore");
+  //updateMethods();
+  // assert(meet(ralf, clarabelle) == "ignore");
 }

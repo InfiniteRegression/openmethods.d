@@ -25,3 +25,15 @@ extern (C) Animal make(string species)
 {
   return cast(Animal) Object.factory(species);
 }
+
+static this()
+{
+  import std.stdio;
+  writeln("*** moreanimals");
+}
+
+static ~this()
+{
+  import std.stdio;
+  writeln("*** no moreanimals");
+}

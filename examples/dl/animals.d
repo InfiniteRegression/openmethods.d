@@ -1,3 +1,9 @@
+static this()
+{
+  import std.stdio;
+  writeln("*** animals");
+}
+
 import openmethods;
 mixin(registerMethods);
 
@@ -41,4 +47,10 @@ string meet(virtual!Animal, virtual!Animal);
 string _meet(Animal, Animal)
 {
   return "ignore";
+}
+
+static ~this()
+{
+  import std.stdio;
+  writeln("*** no animals");
 }

@@ -2,7 +2,8 @@ HERE=`dirname $0`
 cd $HERE
 echo $HERE
 DC=dmd
-SOFLAGS="-g -H -L-fPIC -shared -debug=explain"
+SOFLAGS="-g -L-fPIC -shared -H"
+SOFLAGS="-g -L-fPIC -shared -debug=explain -H"
 
 $DC $SOFLAGS -c ../../source/openmethods.d
 $DC $SOFLAGS openmethods.o -oflibopenmethods.so
