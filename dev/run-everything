@@ -21,24 +21,18 @@ do
         if [ -d $dir/$target ];
         then
             echo $target
-            if [[ "$DC" == 'gdc' ]] && grep --quiet -P $DC_EXCLUSIONS `find $dir/$target -name '*.d'`;
+            if ! dub test -q openmethods:$target $*;
             then
-                echo SKIP $target
-            else
+                echo "ERROR"
+                errors=1
+            fi
 
-                if ! dub test -q openmethods:$target $*;
+            if ! grep --quiet library $dir/$target/dub.sdl;
+            then
+                if ! dub run -q openmethods:$target $*;
                 then
                     echo "ERROR"
                     errors=1
-                fi
-
-                if ! grep --quiet library $dir/$target/dub.sdl;
-                then
-                    if ! dub run -q openmethods:$target $*;
-                    then
-                        echo "ERROR"
-                        errors=1
-                    fi
                 fi
             fi
         fi
@@ -46,12 +40,6 @@ do
         if [[ $target == *'.d' ]]
         then
             echo $target
-
-            if [[ "$DC" == 'gdc' ]] && grep --quiet -P $DC_EXCLUSIONS $dir/$target;
-            then
-                echo SKIP $target
-                continue
-            fi
 
             if ! dub run --single -q $dir/$target $*;
             then
