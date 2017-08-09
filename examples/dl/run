@@ -1,20 +1,24 @@
 HERE=`dirname $0`
 cd $HERE
-echo $HERE
+
+rm -f *.o *.di *.so
+
 DC=dmd
-SOFLAGS="-g -L-fPIC -shared -H"
-SOFLAGS="-g -L-fPIC -shared -debug=explain -H"
 
-$DC $SOFLAGS -c ../../source/openmethods.d
-$DC $SOFLAGS openmethods.o -oflibopenmethods.so
+DFLAGS="-g -I../../source $DFLAGS"
 
-$DC $SOFLAGS -c animals.d
-$DC $SOFLAGS animals.o -oflibanimals.so
+SOFLAGS="-L-fPIC -shared"
 
-$DC $SOFLAGS -c moreanimals.d
-$DC $SOFLAGS moreanimals.o -oflibmoreanimals.so
+$DC $DFLAGS $SOFLAGS -c ../../source/openmethods.d
+$DC $DFLAGS $SOFLAGS openmethods.o -oflibopenmethods.so
 
-$DC -c app.d
-$DC -g app.o -of=animals -L-L. -L-lanimals -L-lopenmethods -L-lphobos2 -L-rpath=`pwd`
+$DC $DFLAGS $SOFLAGS -c animals.d
+$DC $DFLAGS $SOFLAGS animals.o -oflibanimals.so
+
+$DC $DFLAGS $SOFLAGS -c moreanimals.d
+$DC $DFLAGS $SOFLAGS moreanimals.o -oflibmoreanimals.so
+
+$DC $DFLAGS -c app.d
+$DC $DFLAGS app.o -of=animals -L-L. -L-lanimals -L-lopenmethods -L-lphobos2 -L-rpath=`pwd`
 
 ./animals

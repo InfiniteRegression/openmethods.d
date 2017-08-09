@@ -43,6 +43,6 @@ void main()
 
   core.runtime.Runtime.unloadLibrary(moreanimals);
 
-  //updateMethods();
-  // assert(meet(ralf, clarabelle) == "ignore");
+  updateMethods();
+  assert(meet(ralf, clarabelle) == "ignore");
 }
